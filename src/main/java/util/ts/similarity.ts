@@ -1,6 +1,8 @@
 import {Line, Dot, Sketch, Stroke, Bow} from "./Line";
 
-const property = 0.3;// 这个代表相似度分数中，部分相似度（即线条相似度，与整体相似度相对）的占比，暂定0.3，需要关于主导因素占比的相关文献
+// 这个代表相似度分数中，部分相似度（即线条相似度，与整体相似度相对）的占比，
+// 暂定0.3，需要关于主导因素占比的相关文献
+const property = 0.3;
 
 // 获取标准图的对角线长度
 export function getDiagonal(lines : Line[]) : number{
