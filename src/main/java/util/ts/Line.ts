@@ -22,20 +22,19 @@ export class Line{
         this.end = end
     }
 
-    // 两条线求相似度
+    // 两条线求相似度，使用xx公式
     getSimilarity (line : Line) : Number{
         let ratio1 = Math.abs(line.angle - this.angle) / Math.PI;
-        let d = Math.abs(line.distance - this.distance);
-        let ratio2 = this.distance / (d + this.distance);
+        let ratio2 = this.distance > line.distance ? line.distance / this.distance : this.distance/ line.distance;
         /* 长度是否要作为线条相似度的一部分，抑或交给整体相似度或过度绘制等计分
         let length1 = line.start.getDistance(line.end)
         let length2 = this.start.getDistance(this.end)
-        let deltaLength = Math.abs(length1 - length2);
-        let ratio3 = length2 / (deltaLength + length2)
+        let ratio3 = length1 > length2 ? length2/ length1 : length1 / length2;
         */
         return ratio1 * ratio2
     }
 
+    // 给出横坐标，求在该线上的点
     getDot(x : number) : Dot {
         let y = (this.distance - x * Math.cos(this.angle)) / Math.sin(this.angle);
         return new Dot(x, y);
@@ -57,6 +56,21 @@ export class Line{
     // 线段长
     getLength () : number{
         return this.start.getDistance(this.end)
+    }
+
+    // 线段容差带，公式为线段长开根号乘以系数 + 两倍的宽度（此处为2）
+    // 容差带用于计算 过度绘制/绘制缺失 等需要拟合点集的场合
+    getToleranceZoneWidth () {
+        return 3/4 * Math.sqrt(this.getLength()) + 2;
+    }
+
+    // 获取镜像点
+    getMirrorDot(dot : Dot) : Dot {
+        let cos = Math.cos(this.angle);
+        let sin = Math.sin(this.angle);
+        let x = 2 * (sin * sin * dot.x - cos * sin * dot.y + cos * this.distance) - dot.x;
+        let y = 2 * (cos * cos * dot.y - cos * sin * dot.x + sin * this.distance) - dot.y;
+        return new Dot(x, y);
     }
 }
 
@@ -232,6 +246,20 @@ export class Bow{
     getDotFromAngle(angle : number) : Dot {
         let x = this.o.x + this.r * Math.cos(angle);
         let y = this.o.y + this.r * Math.sin(angle);
+        return new Dot(x, y);
+    }
+
+    // 线段容差带，公式为弧长开根号乘以系数 + 两倍的宽度（此处为2）
+    getToleranceZoneWidth () {
+        return 3/4 * Math.sqrt(this.getLength()) + 2;
+    }
+
+    // 获取镜像点
+    getMirrorDot(dot : Dot) : Dot {
+        let angle = this.getAngleX(dot);
+        let length = 2 * dot.getDistance(this.o) - this.r;
+        let x = this.o.x + length * Math.cos(angle);
+        let y = this.o.y + length * Math.sin(angle);
         return new Dot(x, y);
     }
 }
