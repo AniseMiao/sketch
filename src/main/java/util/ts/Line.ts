@@ -133,8 +133,8 @@ export class Bow{
         return equals(this.o.getDistance(dot), this.r)
     }
 
-    onCircleBelt(dot : Dot, tolerance : number) : boolean {
-        return this.o.getDistance(dot) <= tolerance;
+    inCircleToleranceZone(dot : Dot) : boolean {
+        return Math.abs(this.o.getDistance(dot) - this.r) <= this.getToleranceZoneWidth();
     }
 
     // 是否在弧上
@@ -228,10 +228,11 @@ export class Bow{
         return new Dot(x, y);
     }
 
-    // 如果第二条弧的起始及结束点均在圆的容错带内，且第二条弧的起始点与第一条弧的结束点相接，
+    // 如果三点均在圆的容错带内，且前两点在抖动范围内，
     // 则可以认为两者可以连接为一条弧(实际上两个tolerance应当不同)
-    canLink (l1d2 : Dot, l2d1 : Dot, l2d2 : Dot, tolerance : number) : boolean{
-        return equals(l2d1.getDistance(this.o), tolerance) && equals(l2d2.getDistance(this.o), tolerance) && equals(l2d1.getDistance(l1d2), tolerance);
+    canLink (dot1 : Dot, dot2 : Dot, dot3 : Dot, shakeTolerance : number) : boolean{
+        return this.inCircleToleranceZone(dot1) && this.inCircleToleranceZone(dot2) && this.inCircleToleranceZone(dot3)
+        && dot1.getDistance(dot2) <= shakeTolerance;
     }
 
     getSimilarity(bow : Bow) {
@@ -490,10 +491,10 @@ export class Stroke {
             bow.setR(dot1.getDistance(bow.o));
 
             let dot4 = this.dots[i + 1];
-            if (bow.onCircleBelt(dot4, 5)) {
+            if (bow.inCircleToleranceZone(dot4)) {
                 let sum = 0;
                 for (let j = 0; j < this.dots.length ; j++){
-                    if (bow.onCircleBelt(this.dots[j], 5)) {
+                    if (bow.inCircleToleranceZone(this.dots[j])) {
                         sum++;
                     }
                     if (sum > this.dots.length / 4) {
