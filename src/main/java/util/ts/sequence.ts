@@ -1,5 +1,7 @@
 import {Bow, Dot, Line, Sketch, Stroke} from "./Line";
 
+// 不易寻求依据或建立标准，此方法废弃
+
 export function getSequenceBow(sketch : Sketch, bow : Bow) {
     return 100 / sketch.strokes.length;
     /*

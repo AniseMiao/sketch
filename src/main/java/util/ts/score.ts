@@ -32,9 +32,12 @@ function getScoreLine(sketch : Sketch, copyId : number) : number[] {
     // 绘制缺失
     let lack = getLackLine(sketch, lines);
     score.add(lack);
-    // 顺序
+
+    /* 顺序
     let sequence = getSequenceLine(sketch, lines);
     score.add(sequence)
+     */
+
     // 相似性
     let similarity = getSimilarityLine(sketch, lines);
     score.add(similarity)
@@ -68,9 +71,12 @@ function getScoreBow(sketch : Sketch, copyId : number) : number[] {
     // 绘制缺失
     let lack = getLackBow(sketch, bow);
     score.add(lack);
-    // 顺序
+
+    /* 顺序
     let sequence = getSequenceBow(sketch, bow);
     score.add(sequence)
+     */
+
     // 相似性
     let similarity = getSimilarityBow(sketch, bow);
     score.add(similarity)
