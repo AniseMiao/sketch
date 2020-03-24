@@ -306,6 +306,12 @@ export class Dot {
     getDistanceFromLine(line : Line) : number {
         return Math.abs(Math.cos(line.angle) * this.x + Math.sin(line.angle) * this.y - line.distance)
     }
+
+    // 在线的起始点和结束点之间
+    inLine(line : Line) {
+        return (this.x <= line.end.x && this.x >= line.start.x) ||
+            (this.x <= line.start.x && this.x >= line.end.x);
+    }
 }
 
 export class Sketch{
