@@ -1,5 +1,6 @@
 import {Bow, Line, Sketch} from "./Line";
 
+// 标准所需尺寸和实际尺寸的比值
 export function getSizeLine(sketch : Sketch, lines : Line[]) : number {
     let standardSquare = getStandardSquare(lines);
     let realSquare =  sketch.getStandardSquare();
@@ -7,6 +8,7 @@ export function getSizeLine(sketch : Sketch, lines : Line[]) : number {
     return 100 * (realSquare < standardSquare ? realSquare / standardSquare : standardSquare / realSquare)
 }
 
+// 标准所需尺寸和实际尺寸的比值
 export function getSizeBow(sketch : Sketch, bow : Bow) : number {
     let standardSquare = bow.getStandardSquare();
     let realSquare =  sketch.getStandardSquare();
