@@ -1,8 +1,10 @@
 // 主要根据超出绘制的部分在总绘制部分的占比
 import {Bow, Dot, Line, Sketch, Stroke} from "./Line";
 import {getDistanceSum} from "./lack"
+import {isBowMarked, isLineMarked, markBow, markLine, setupBowMark, setupLineMark} from "./mark";
 
 export function getExcessiveLine(sketch : Sketch, lines : Line[]) : number {
+    setupLineMark(lines.length);
     let standardDistance = getDistanceSum(lines);
     let excessiveDistance = 0.0;
     // 计算超出部分的长度
@@ -19,11 +21,13 @@ export function getExcessiveLine(sketch : Sketch, lines : Line[]) : number {
 function getExcessiveDistanceLine(dot1 : Dot, dot2 : Dot, lines : Line[]) : number{
     let distance1 = dot1.getDistanceFromLine(lines[0]);
     let target = lines[0];
-    for (let line in lines) {
-        let distance = dot1.getDistanceFromLine(<Line><unknown>line);
+    let index = 0;
+    for (let i = 0; i < lines.length; i++) {
+        let distance = dot1.getDistanceFromLine(<Line><unknown>lines[i]);
         if (distance < distance1) {
             distance1 = distance;
-            target = <Line><unknown>line;
+            target = <Line><unknown>lines[i];
+            index = i;
         }
     }
     let distance2 = dot2.getDistanceFromLine(target);
@@ -34,7 +38,14 @@ function getExcessiveDistanceLine(dot1 : Dot, dot2 : Dot, lines : Line[]) : numb
     } else if (distance1 > tolerance && distance2 >  tolerance) {
         ratio = 1;
     }
-    if (ratio != 0) {// 计算两点间的距离（映射到同侧）
+    if (isLineMarked(index, dot1, dot2)) {
+        ratio = 1;
+    } else {
+        markLine(index, dot1, dot2);
+    }
+    if (ratio == 0) {
+        return 0;
+    } else {
         let distance = dot1.getDistance(dot2);
         let cosTheta = Math.cos(target.angle);
         let sinTheta = Math.sin(target.angle);
@@ -47,12 +58,11 @@ function getExcessiveDistanceLine(dot1 : Dot, dot2 : Dot, lines : Line[]) : numb
             distance = dot1.getDistance(mirrorDot);
         }
         return ratio * distance;
-    } else {
-        return 0;
     }
 }
 
 export function getExcessiveBow(sketch : Sketch, bow : Bow) : number{
+    setupBowMark();
     let standardDistance = bow.getLength();
     let excessiveDistance = 0.0;
     // 计算超出部分的长度
@@ -76,7 +86,15 @@ function getExcessiveDistanceBow(dot1 : Dot, dot2 : Dot, bow : Bow) : number{
     } else if (distance1 > tolerance && distance2 >  tolerance) {
         ratio = 1;
     }
-    if (ratio != 0) {// 计算两点间的距离（映射到同侧）
+
+    if (isBowMarked(bow.getAngleX(dot1), bow.getAngleX(dot2))) {
+        ratio = 1;
+    } else {
+        markBow(bow.getAngleX(dot1), bow.getAngleX(dot2));
+    }
+    if (ratio == 0) {
+        return 0;
+    } else {
         let distance = dot1.getDistance(dot2);
         let delta1 = dot1.getDistance(bow.o) - bow.r;
         let delta2 = dot2.getDistance(bow.o) - bow.r;
@@ -87,7 +105,5 @@ function getExcessiveDistanceBow(dot1 : Dot, dot2 : Dot, bow : Bow) : number{
             distance = dot1.getDistance(mirrorDot);
         }
         return ratio * distance;
-    } else {
-        return 0;
     }
 }

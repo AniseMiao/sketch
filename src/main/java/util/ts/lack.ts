@@ -1,8 +1,9 @@
 // 主要根据占有的角度计算结果，找出每段在范围内的占有角
 import {Bow, Dot, Line, Sketch, Stroke} from "./Line";
+import {isBowMarked, isLineMarked, markBow, markLine, setupBowMark, setupLineMark} from "./mark";
 
-// TODO 被重复计算的部分（考虑使用整体减去未绘制到的部分）
 export function getLackBow(sketch : Sketch, bow : Bow) : number {
+    setupBowMark();
     let standardAngle = bow.getAngleO();
     let realAngle = 0;
     // 对于每条线，找出所有实际包括的角度值
@@ -26,15 +27,23 @@ function getRealAngleBow(dot1 : Dot, dot2 : Dot, bow : Bow) : number{
     } else if (distance1 > tolerance && distance2 >  tolerance) {
         ratio = 1;
     }
-    if (ratio != 0) {// 计算两点间的夹角
+    if (ratio == 0) {
+        return 0;
+    } else {// 计算两点间的夹角
+        if (ratio == 1) {// 如果实际绘制部分已被标记过，那么不再次计算
+            if (isBowMarked(bow.getAngleX(dot1), bow.getAngleX(dot2))) {
+                return 0;
+            } else {
+                markBow(bow.getAngleX(dot1), bow.getAngleX(dot2));
+            }
+        }
         let angle = bow.o.getAngle(dot1, dot2);
         return ratio * angle;
-    } else {
-        return 0;
     }
 }
 
 export function getLackLine(sketch : Sketch, lines : Line[]) : number{
+    setupLineMark(lines.length);
     let standardDistance = getDistanceSum(lines);
     let realDistance = 0.0;
     // 对于每条线，找出实际绘制的部分
@@ -51,11 +60,13 @@ export function getLackLine(sketch : Sketch, lines : Line[]) : number{
 function getRealDistanceLine(dot1 : Dot, dot2 : Dot, lines : Line[]) : number{
     let distance1 = dot1.getDistanceFromLine(lines[0]);
     let target = lines[0];
-    for (let line in lines) {
-        let distance = dot1.getDistanceFromLine(<Line><unknown>line);
+    let index = 0;
+    for (let i = 0; i < lines.length; i++) {
+        let distance = dot1.getDistanceFromLine(<Line><unknown>lines[i]);
         if (distance < distance1) {
             distance1 = distance;
-            target = <Line><unknown>line;
+            target = <Line><unknown>lines[i];
+            index = i;
         }
     }
     let distance2 = dot2.getDistanceFromLine(target);
@@ -66,7 +77,16 @@ function getRealDistanceLine(dot1 : Dot, dot2 : Dot, lines : Line[]) : number{
     } else if (distance1 > tolerance && distance2 >  tolerance) {
         ratio = 0;
     }
-    if (ratio != 0) {// 计算两点间的距离（映射到同侧）
+    if (ratio == 0) {
+        return 0;
+    } else {// 计算两点间的距离（映射到同侧）
+        if (ratio == 1) {// 如果实际绘制部分已被标记过，那么不再次计算
+            if (isLineMarked(index, dot1, dot2)) {
+                return 0;
+            } else {
+                markLine(index, dot1, dot2);
+            }
+        }
         let distance = dot1.getDistance(dot2);
         let cosTheta = Math.cos(target.angle);
         let sinTheta = Math.sin(target.angle);
@@ -79,8 +99,6 @@ function getRealDistanceLine(dot1 : Dot, dot2 : Dot, lines : Line[]) : number{
             distance = dot1.getDistance(mirrorDot);
         }
         return ratio * distance;
-    } else {
-        return 0;
     }
 }
 
