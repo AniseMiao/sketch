@@ -31,8 +31,8 @@ public class TimeScoreUtil {
     public double getRealCost(String pid) {
         Sketch sketch = Sketch.getSketch(pid);
         int lastStrokeIndex = sketch.strokes.size() - 1;
-        int lastDotIndex = sketch.strokes.get(lastStrokeIndex).timeStamps.size() - 1;
-        return sketch.strokes.get(lastStrokeIndex).timeStamps.get(lastDotIndex);
+        int lastDotIndex = sketch.strokes.get(lastStrokeIndex).dots.size() - 1;
+        return sketch.strokes.get(lastStrokeIndex).dots.get(lastDotIndex).getT();
     }
 
     public double getLineTimeScore(String pid, TargetLine[] lines) {

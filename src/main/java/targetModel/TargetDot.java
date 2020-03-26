@@ -5,6 +5,7 @@ import java.lang.annotation.Target;
 public class TargetDot {
     public double x;
     public double y;
+    public long t;
 
     public TargetDot() {
 
@@ -31,11 +32,20 @@ public class TargetDot {
         this.y = y;
     }
 
+    public long getT() {
+        return t;
+    }
+
+    public void setT(long t) {
+        this.t = t;
+    }
+
     @Override
     public String toString() {
         return "TargetDot{" +
                 "x=" + x +
                 ", y=" + y +
+                ", t=" + t +
                 '}';
     }
 

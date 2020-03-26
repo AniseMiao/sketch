@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class Stroke {
     public ArrayList<TargetDot> dots;
-    public ArrayList<Integer> timeStamps;
 
     public ArrayList<TargetDot> getDots() {
         return dots;
@@ -13,14 +12,6 @@ public class Stroke {
 
     public void setDots(ArrayList<TargetDot> dots) {
         this.dots = dots;
-    }
-
-    public ArrayList<Integer> getTimeStamps() {
-        return timeStamps;
-    }
-
-    public void setTimeStamps(ArrayList<Integer> timeStamps) {
-        this.timeStamps = timeStamps;
     }
 
     public TargetLine toTargetLine() {

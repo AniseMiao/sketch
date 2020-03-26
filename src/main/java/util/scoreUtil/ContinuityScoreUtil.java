@@ -16,7 +16,7 @@ public class ContinuityScoreUtil {
         for (Stroke stroke : sketch.strokes) {
             for (int i = 0; i < stroke.dots.size() - 1; i++) {
                 double distanceInterval = TargetDot.getDistance(stroke.dots.get(i), stroke.dots.get(i + 1));
-                double timeInterval = stroke.timeStamps.get(i + 1) - stroke.timeStamps.get(i);
+                double timeInterval = stroke.dots.get(i + 1).getT() - stroke.dots.get(i).getT();
                 double brakingSpeed = distanceInterval / timeInterval;
                 speedSum += brakingSpeed;
                 speeds.add(speedSum);

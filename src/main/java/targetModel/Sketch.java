@@ -30,8 +30,8 @@ public class Sketch {
             ArrayList<Integer> timeStamps = new ArrayList<>();
             for (Dot dot : dots) {
                 TargetDot targetDot = new TargetDot(dot.getX(), dot.getY());
+                targetDot.setT(dot.getT());
                 targetDots.add(targetDot);
-                timeStamps.add(dot.getT());
             }
             strokes.add(stroke);
         }
@@ -41,7 +41,7 @@ public class Sketch {
     static ArrayList<String> getStrokeIds(String pid) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        ArrayList<String> ret = (ArrayList<String>)session.createQuery("select lid from Line where pid = ?1 ")
+        ArrayList<String> ret = (ArrayList<String>)session.createQuery("select lid from LinePO where pid = ?1 ")
                 .setParameter(1, pid).getResultList();
         transaction.commit();
         session.close();

@@ -54,15 +54,12 @@ public class NumScoreUtil {
                 if(circle.canLink(l1d2, l2d1, l2d2, DISTANCE_TOLERANCE)) {
                     // 将l2放入l1，去掉l2，计数--
                     startStroke.dots.addAll(endStroke.dots);
-                    startStroke.timeStamps.addAll(endStroke.timeStamps);
                     strokes.remove(i + 1);
                     i--;
                 } else if(circle.canLink(l1d2, l2d2, l2d1, DISTANCE_TOLERANCE)) {
                     // 将l2倒置放入l1， 去掉l2，计数--
                     Collections.reverse(startStroke.dots);
-                    Collections.reverse(endStroke.timeStamps);
                     startStroke.dots.addAll(endStroke.dots);
-                    startStroke.timeStamps.addAll(endStroke.timeStamps);
                     i--;
                 }
             }
@@ -86,16 +83,13 @@ public class NumScoreUtil {
                 if(TargetDot.getDistance(l1d2, l2d1) <= DISTANCE_TOLERANCE && canLink(startStroke, endStroke)) {
                     // 将l2放入l1，去掉l2，计数--
                     startStroke.dots.addAll(endStroke.dots);
-                    startStroke.timeStamps.addAll(endStroke.timeStamps);
                     strokes.remove(i + 1);
                     i--;
                 } else {
                     Collections.reverse(endStroke.dots);
                     if(TargetDot.getDistance(l1d2, l2d2) <= DISTANCE_TOLERANCE && canLink(startStroke, endStroke)) {
                         // 将l2倒置放入l1， 去掉l2，计数--
-                        Collections.reverse(endStroke.timeStamps);
                         startStroke.dots.addAll(endStroke.dots);
-                        startStroke.timeStamps.addAll(endStroke.timeStamps);
                         i--;
                     } else {
                         Collections.reverse(endStroke.dots);
