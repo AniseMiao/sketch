@@ -23,6 +23,7 @@ public class PictureDaoImpl implements PictureDao {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
         session.createQuery("delete from PicturePO where pid = ?1 ").setParameter(1, pid).executeUpdate();
+        session.createQuery("delete from DotPO  where lid in (select lid from LinePO where pid = ?1)").setParameter(1, pid).executeUpdate();
         transaction.commit();
         session.close();
     }

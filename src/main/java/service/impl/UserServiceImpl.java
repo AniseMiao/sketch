@@ -11,14 +11,14 @@ import util.IdUtil;
 public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
-    public void addUser(String username, String password, String nickname, String phone){
+    public boolean addUser(String username, String password, String nickname, String phone){
         UserPO user = new UserPO();
         String aid = IdUtil.getAccountId();
         user.setAid(aid);
         user.setPassword(password);
         user.setNickname(nickname);
         user.setPhone(phone);
-        userDao.addUser(user);
+        return userDao.addUser(user);
     }
 
     @PostMapping("/deleteUser")
@@ -37,8 +37,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @PostMapping("/getUser")
-    public UserPO getUser(String aid){
-        return userDao.getUser(aid);
+    public UserPO getUser(String username){
+        return userDao.getUser(username);
     }
 
     @PostMapping("/loginUser")

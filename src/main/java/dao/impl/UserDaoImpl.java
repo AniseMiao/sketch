@@ -8,12 +8,20 @@ import util.HibernateUtil;
 
 public class UserDaoImpl implements UserDao {
     @Override
-    public void addUser(UserPO user) {
+    public boolean addUser(UserPO user) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        session.save(user);
-        transaction.commit();
-        session.close();
+        UserPO userPO = (UserPO) session.createQuery("from UserPO where username = ?1 ").setParameter(1, user.getUsername()).uniqueResult();
+        if (userPO != null) {
+            transaction.commit();
+            session.close();
+            return false;
+        } else {
+            session.save(user);
+            transaction.commit();
+            session.close();
+        }
+        return true;
     }
 
     @Override
@@ -35,10 +43,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public UserPO getUser(String aid) {
+    public UserPO getUser(String username) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        UserPO user = session.get(UserPO.class, aid);
+        UserPO user = (UserPO) session.createQuery("from UserPO where username = ?1 ").setParameter(1, username).uniqueResult();
         transaction.commit();
         session.close();
         return user;

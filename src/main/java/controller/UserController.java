@@ -2,6 +2,7 @@ package controller;
 
 import PO.UserPO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,8 +16,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/addUser")
-    public void addUser(String username, String password, String nickname, String phone){
-        userService.addUser(username, password, nickname, phone);
+    public boolean addUser(String username, String password, String nickname, String phone){
+        return userService.addUser(username, password, nickname, phone);
     }
 
     @PostMapping("/deleteUser")
@@ -29,9 +30,9 @@ public class UserController {
         userService.updateUser(aid, username, password, nickname, phone);
     }
 
-    @PostMapping("/getUser")
-    public UserPO getUser(String aid){
-        return userService.getUser(aid);
+    @GetMapping("/getUser")
+    public UserPO getUser(String username){
+        return userService.getUser(username);
     }
 
     @PostMapping("/login")
