@@ -2,6 +2,7 @@ package controller;
 
 import PO.ScorePO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ public class ScoreController {
         scoreService.addScore(pid, scores);
     }
 
-    @PostMapping("/getScore")
+    @GetMapping("/getScore")
     public ScorePO getScore(String pid) {
         return scoreService.getScore(pid);
     }

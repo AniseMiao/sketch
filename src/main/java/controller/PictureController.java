@@ -4,6 +4,7 @@ import PO.LinePO;
 import PO.PicturePO;
 import model.Line;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,17 +36,17 @@ public class PictureController {
         lineService.addLines(pid, lines);
     }
 
-    @PostMapping("/getLines")
+    @GetMapping("/getLines")
     public ArrayList<Line> getLines(String pid) {
         return lineService.getLines(pid);
     }
 
-    @PostMapping("/getPicture")
+    @GetMapping("/getPicture")
     public PicturePO getPicture(String pid) {
         return pictureService.getPicture(pid);
     }
 
-    @PostMapping("/getPictures")
+    @GetMapping("/getPictures")
     public ArrayList<PicturePO> getPictures(String aid) {
         return pictureService.getPictures(aid);
     }
