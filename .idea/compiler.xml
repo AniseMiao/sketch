@@ -9,6 +9,9 @@
         <module name="sketch" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="sketch" target="11" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

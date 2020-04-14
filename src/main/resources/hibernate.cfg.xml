@@ -18,11 +18,11 @@
         <!--配置数据的方言-->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <!-- 配置映射-->
-        <mapping class="PO.DotPO"/>
-        <mapping class="PO.LinePO"/>
-        <mapping class="PO.PicturePO"/>
-        <mapping class="PO.ScorePO"/>
-        <mapping class="PO.UserPO"/>
-        <mapping class="PO.IdPO"/>
+        <mapping class="com.edu.nju.sketch.PO.Dot"/>
+        <mapping class="com.edu.nju.sketch.PO.Line"/>
+        <mapping class="com.edu.nju.sketch.PO.Picture"/>
+        <mapping class="com.edu.nju.sketch.PO.Score"/>
+        <mapping class="com.edu.nju.sketch.PO.User"/>
+        <mapping class="com.edu.nju.sketch.PO.Constructor"/>
     </session-factory>
 </hibernate-configuration>
