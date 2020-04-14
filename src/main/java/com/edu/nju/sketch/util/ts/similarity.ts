@@ -74,7 +74,7 @@ export function getSimilarityLine(sketch : Sketch, lines : Line[]) {
     }
     let wholeSimilarity = sketch.getSimilarityLine(lines)
     // 返回公式结果
-    return 100 * (property * lineSimilarity + (1 - property) * wholeSimilarity);
+    return 100 * wholeSimilarity;
 }
 
 // 对于标准图形，构造标准点集求两者的豪斯多夫距离构造的相似度
@@ -92,5 +92,5 @@ export function getSimilarityBow(sketch : Sketch, bow : Bow) {
     }
     let wholeSimilarity = sketch.getSimilarityBow(bow)
     // 返回公式结果
-    return 100 * (property * bowSimilarity + (1 - property) * wholeSimilarity);
+    return 100 * wholeSimilarity;
 }
