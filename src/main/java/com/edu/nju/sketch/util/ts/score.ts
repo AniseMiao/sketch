@@ -72,11 +72,6 @@ function getScoreBow(sketch : Sketch, copyId : number) : number[] {
     let lack = getLackBow(sketch, bow);
     score.add(lack);
 
-    /* 顺序
-    let sequence = getSequenceBow(sketch, bow);
-    score.add(sequence)
-     */
-
     // 相似性
     let similarity = getSimilarityBow(sketch, bow);
     score.add(similarity)
@@ -88,9 +83,9 @@ function getScoreBow(sketch : Sketch, copyId : number) : number[] {
     score.add(smoothness)
     // 时间
     let time = getTimeBow(sketch, bow);
-    score.add(time)
-    // TODO 总分
-    let sum = 100;
+    score.add(time);
+    //总分 S = 0.143*St + 0.145*Sn + 0.108*Ssim + 0.208*Sc + 0.158*Se + 0.239*Sl
+    let sum = 0.143 * time + 0.145 * count + 0.108 * similarity + 0.208 * continuity + 0.158 * excessive + 0.239 * lack;
     score.add(sum);
     return score
 }
